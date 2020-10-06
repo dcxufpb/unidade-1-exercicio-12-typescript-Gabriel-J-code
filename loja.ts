@@ -6,7 +6,34 @@ export class Loja {
         public telefone: string, public observacao: string, public cnpj: string, public inscricao_estadual: string) { }
 
     public dados_loja(): string {
-        // Implemente aqui
-        return "";
+        this.validar_campos_obrigatorios();        
+		
+		
+		var _telefone = (this.telefone)? "Tel " + this.telefone : ""
+		
+		_telefone = ( this.endereco.possui_cep() && this.telefone)? " " + _telefone : _telefone
+
+		var _observacao = (this.observacao)? this.observacao : ""
+
+		var nota = `${this.nome_loja}\n`		
+		nota += `${this.endereco.dados_endereco()}${_telefone}\n`
+		nota += `${_observacao}\n`
+		nota += `CNPJ: ${this.cnpj}\n`
+		nota += `IE: ${this.inscricao_estadual}\n`
+
+		return nota;
     }
+
+	public validar_campos_obrigatorios(): void {
+		if (!this.nome_loja) {
+		throw new Error(`O campo nome da loja é obrigatório`);
+		}
+		
+		if (!this.cnpj){
+			throw new Error(`O campo CNPJ da loja é obrigatório`)
+		} 
+		if (!this.inscricao_estadual){
+			throw new Error(`O campo inscrição estadual da loja é obrigatório`)
+		}
+	}
 }
